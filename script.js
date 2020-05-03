@@ -24,7 +24,7 @@ class Comment extends React.Component {
       <div>
         <div>
           {
-            this.state.fields.map(field =>{
+            this.state.fields.map(field => {
               return (
                 <h1>
                   {field.author}
