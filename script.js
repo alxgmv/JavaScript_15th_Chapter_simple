@@ -4,18 +4,19 @@ class Comment extends React.Component {
     this.state =
       {
         fields : [
-        { author: 'moderator' },
-        { text: 'test message' },
+        { author: 'author: moderator' },
+        { commentText: 'comment text: test message' },
       ],
-      newCommentText:''
+      date: new Date()
     }
   }
 
-  addCommentText(value) {
+  handleClick() {
     const fields = this.state.fields;
     fields.push({
-      author: this.state.author,
-      text: this.state.newCommentText
+      author: this.state.newAuthor,
+      commentText: this.state.newCommentText,
+      date: this.state.date.toLocaleTimeString()
     });
   }
 
@@ -28,7 +29,8 @@ class Comment extends React.Component {
               return (
                 <h1>
                   {field.author}
-                  {field.text}
+                  {field.commentText}
+                  {field.date}
                 </h1>
               )
             })
@@ -36,20 +38,35 @@ class Comment extends React.Component {
         </div>
 
         <div>
-          <input
-            type="text"
-            placeholder="Comment text"
-            value={this.state.newCommentText}
-            onChange={ev => {
-              this.setState({ newCommentText :ev.target.value});
-            }}
-            onKeyDown={ev => {
-              if (ev.keyCode ===13) {
-                this.addCommentText();
-              }
-            }}
-
-          />
+          <form className="CommentForm">
+            <label>
+              Author name:
+              <input
+                className="CommentInput"
+                type="text"
+                placeholder="Name"
+                value={this.state.newAuthor}
+                onChange={ev => {
+                  this.setState({ newAuthor :ev.target.value});
+                }}
+              />
+            </label>
+            <label>
+              Comment text:
+              <textarea
+                className="CommentText"
+                type="text"
+                placeholder="Comment text"
+                value={this.state.newCommentText}
+                onChange={ev => {
+                  this.setState({ newCommentText :ev.target.value});
+                }}
+              />
+            </label>
+            <button className="formButton" onClick={this.handleClick}>
+              Submit form
+            </button>
+          </form>
         </div>
       </div>
     );
@@ -59,7 +76,3 @@ ReactDOM.render(
   <Comment />,
   document.getElementById('app')
 );
-// <h2>
-//      {this.state.date.toLocaleTimeString()}
-// </h2>
-// {  date: new Date()},
