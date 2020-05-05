@@ -7,17 +7,34 @@ class Comment extends React.Component {
         { author: 'author: moderator' },
         { commentText: 'comment text: test message' },
       ],
-      date: new Date()
+      date: new Date(),
+      newAuthor:'',
+      newCommentText:''
     }
+    this.handleSubmit = this.handleSubmit.bind(this),
+    this.handleChange = this.handleChange.bind(this)
   }
 
-  handleClick() {
-    const fields = this.state.fields;
-    fields.push({
-      author: this.state.newAuthor,
-      commentText: this.state.newCommentText,
-      date: this.state.date.toLocaleTimeString()
+
+  handleChange(ev) {
+    this.setState({
+      [ev.target.name]:ev.target.value
     });
+  }
+
+  handleSubmit(ev) {
+    ev.preventDefault();
+    const fields = this.state.fields;
+    if ( (this.state.newAuthor !='') && (this.state.newCommentText!='') ) {
+      fields.push({
+        author: this.state.newAuthor,
+        commentText: this.state.newCommentText,
+      });
+      this.setState({  fields  });
+    }  else {
+      alert("empty field!");
+    }
+    console.log('addcomment');
   }
 
   render() {
@@ -30,7 +47,6 @@ class Comment extends React.Component {
                 <h1>
                   {field.author}
                   {field.commentText}
-                  {field.date}
                 </h1>
               )
             })
@@ -38,34 +54,30 @@ class Comment extends React.Component {
         </div>
 
         <div>
-          <form className="CommentForm">
+          <form className="CommentForm" onSubmit={this.handleSubmit}>
             <label>
               Author name:
               <input
+                name="newAuthor"
                 className="CommentInput"
                 type="text"
                 placeholder="Name"
                 value={this.state.newAuthor}
-                onChange={ev => {
-                  this.setState({ newAuthor :ev.target.value});
-                }}
+                onChange={this.handleChange}
               />
             </label>
             <label>
               Comment text:
               <textarea
+                name="newCommentText"
                 className="CommentText"
-                type="text"
+                type="submit"
                 placeholder="Comment text"
                 value={this.state.newCommentText}
-                onChange={ev => {
-                  this.setState({ newCommentText :ev.target.value});
-                }}
+                onChange={this.handleChange}
               />
             </label>
-            <button className="formButton" onClick={this.handleClick}>
-              Submit form
-            </button>
+            <button type="submit" className="formButton">Submit</button>
           </form>
         </div>
       </div>
