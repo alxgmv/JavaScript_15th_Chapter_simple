@@ -8,9 +8,11 @@ class Comment extends React.Component {
             author: 'author: moderator',
             commentText: 'comment text: test message',
             date: new Date().toLocaleString(),
-            isVisible: true
           }
-        ]
+        ],
+          newCommentText: '',
+          newAuthor:'',
+          isVisible: true
       }
     this.handleSubmit = this.handleSubmit.bind(this),
     this.handleChange = this.handleChange.bind(this),
@@ -18,11 +20,25 @@ class Comment extends React.Component {
   }
 
   removeComment(key) {
-    const currentState = this.state.fields.isVisible;
+    const currentState = [...this.state.isVisible];
     this.setState({isVisible: !currentState});
+    this.state.fields.map((field, i) => {
+      return (
+        <ul
+        key = {i}
+        className = {this.state.isVisible ? 'visible': 'hidden'}
+        >
+          <li>{field.author}</li>
+          <li>{field.commentText}</li>
+          <li>{field.date}</li>
+          <button className="formButton" onClick = {ev => {this.removeComment(i)}}>Delete</button>
+        </ul>
+      )
+    })
     console.log(key)
-    console.log(currentState)
-  }
+    console.log(this.state.isVisible)
+    }
+
 
   handleChange(ev) {
     this.setState({
@@ -39,14 +55,16 @@ class Comment extends React.Component {
         author: this.state.newAuthor,
         commentText: this.state.newCommentText,
         date: new Date().toLocaleString(),
-        isVisible: true
       });
-      this.setState({  fields });
+      this.setState( {fields} );
+      this.setState({
+        isVisible: true
+      })
     } else {
       alert("empty field!");
     }
     console.log('addcomment');
-    console.log(this.state.fields.isVisible);
+    console.log(this.state.isVisible);
   }
 
   render() {
@@ -56,18 +74,15 @@ class Comment extends React.Component {
           {
             this.state.fields.map((field, i) => {
               return (
-                <div
-                  key = {i}
-                  className = {this.state.fields.isVisible ? 'hidden': 'visible'}
-                  onClick = {ev => {this.removeComment(i)}}
+                <ul
+                key = {i}
+                className = {this.state.isVisible ? 'visible': 'hidden'}
                 >
-                  <ul>
-                    <li>{field.author}</li>
-                    <li>{field.commentText}</li>
-                    <li>{field.date}</li>
-                  </ul>
-                  <button className="formButton">Delete</button>
-                </div>
+                  <li>{field.author}</li>
+                  <li>{field.commentText}</li>
+                  <li>{field.date}</li>
+                  <button className="formButton" onClick = {ev => {this.removeComment(i)}}>Delete</button>
+                </ul>
               )
             })
           }
